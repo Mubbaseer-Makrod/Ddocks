@@ -4,10 +4,10 @@ photo: take photo from req.product and send photo
 updateStock: req has order, update the stock of each product present in order
 */
 
-import { Product } from "../models/product.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import { asyncHandler } from "../utils/asyncHandler";
+import { Product } from "../models/product.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 
 const getProductById = asyncHandler((req, res, next) => {

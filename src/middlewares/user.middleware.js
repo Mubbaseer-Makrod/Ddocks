@@ -1,7 +1,7 @@
-import { User } from "../models/user.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import { asyncHandler } from "../utils/asyncHandler";
+import { User } from "../models/user.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 
 /* pushOrderInPurchaseList: Push the purchase order into the user  purchase 
@@ -32,3 +32,19 @@ const pushOrderInPurchaseList = asyncHandler(async (req, res, next) => {
     next()
 
 })
+
+const getUserById = asyncHandler(async (req, res) => {
+    const userId = req.params
+
+    const user = await User.findById(categoryId)
+
+    if(!user) {
+        throw new ApiError(404, "No Category Found")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, user, "Successfully fetched the category")
+    )
+})
+
+export {getUserById, pushOrderInPurchaseList}

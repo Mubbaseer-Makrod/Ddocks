@@ -1,8 +1,8 @@
-import { Order } from "../models/order.model";
-import { User } from "../models/user.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import { asyncHandler } from "../utils/asyncHandler";
+import { Order } from "../models/order.model.js";
+import { User } from "../models/user.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const getUser = asyncHandler( async (req, res) => {
     return res.status(200).json(
@@ -37,6 +37,8 @@ const userPurchaseList = asyncHandler( async(req, res) => {
     }
 
     return res.status(200),json(
-        new ApiResponse(200, order, "Order list is empty")
+        new ApiResponse(200, order.purchases, "Order list is empty")
     )
 })
+
+export {getUser, updateUser, userPurchaseList}
