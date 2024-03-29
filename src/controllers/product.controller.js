@@ -1,12 +1,3 @@
-/*
-1. createProduct
-2. getProduct
-3. updateProduct
-4. deleteProduct
-5. getAllProducts
-6. getAllUniqueCategory
-*/
-
 import { Product } from "../models/product.model";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
@@ -15,7 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 const createProduct = asyncHandler(async( req, res ) => {
     const productData = req.body
 
-    const product = await Product.create(product)
+    const product = await Product.create(productData)
 
     if(product.lenght == 0) {
         throw new ApiError(404, "Product creation failed Product: createProduct")
@@ -40,7 +31,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     }
 
     return res.status(200).json(
-        new ApiResponse(200, updateProduct, "Updation Success Product: updateProduct")
+        new ApiResponse(200, updatedProduct, "Updation Success Product: updateProduct")
     )
 })
 
@@ -57,3 +48,40 @@ const deleteProduct = asyncHandler( async (req, res) => {
         new ApiResponse(200, message="Product delete Success")
     )
 })
+
+const getProduct = asyncHandler(async (req,res) => {
+    return res.status(200).json(
+        new ApiResponse(200, req?.product, "Success product detail fetched")
+    )
+})
+
+const getAllProduct = asyncHandler(async (req,res) => {
+    const { page = 1, limit = 10 } = req.query
+
+    const products = await Product.find()
+                            .sort({ createdAt: 'desc' })
+                            .populate("category")
+                            .skip((page - 1) * limit)
+
+    if(products.length == 0) {
+        throw new ApiError(404, "No Product Available")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, {products, page}, "Success: Products fetchs Product: getAllProduct")
+    )
+})
+
+const getAllUniqueCategory = asyncHandler(async (req,res) => {
+    const uniqueCategory = await Product.distinct("category")
+
+    if(uniqueCategory.length == 0) {
+        throw new ApiError(404, "No Unique Category Found Product: getAllUniqueCategory")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, uniqueCategory, "Successfully fetched all the unique category")
+    )
+})
+
+export { createProduct, updateProduct, deleteProduct, getProduct, getAllProduct, getAllUniqueCategory }

@@ -1,8 +1,3 @@
-// getUserById,
-// getUser,
-// updateUser,
-// userPurchaseList
-
 import { Order } from "../models/order.model";
 import { User } from "../models/user.model";
 import { ApiError } from "../utils/ApiError";
@@ -38,8 +33,10 @@ const userPurchaseList = asyncHandler( async(req, res) => {
     const order = Order.find({user})
 
     if(!order) {
-        return ApiError(404, "UserPurchaseList: Database response error")
+        throw new ApiError(404, "UserPurchaseList: Database response error")
     }
 
-    return ApiResponse(200, order, "Order list is empty")
+    return res.status(200),json(
+        new ApiResponse(200, order, "Order list is empty")
+    )
 })

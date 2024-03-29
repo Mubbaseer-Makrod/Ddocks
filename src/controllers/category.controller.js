@@ -39,14 +39,21 @@ const getCategory = asyncHandler(async (req, res) => {
 })
 
 const getAllCategory = asyncHandler(async (req, res) => {
-    const categories = await Category.find() 
+
+    const { page = 1, limit = 10 } = req.query
+
+    const categories = await Category.find()
+                            .limit( limit * 1)
+                            .skip(( page - 1 ) * limit )
+                            .exec(); 
+
 
     if(!categories) {
         throw new ApiError(404, "Failed: No Category Found")
     }
 
     return res.status(200).json(
-        new ApiResponse(200, categories, "Success: Category Found")
+        new ApiResponse(200, { categories, currentPage: page }, "Success: Category Found")
     )
 })
 
