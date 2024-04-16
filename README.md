@@ -1,2 +1,2 @@
-# FUll STACK ECOM
-An Full Stack Ecom website 
+# ECOM BACKEND
+An Full Stack Ecom Backend
